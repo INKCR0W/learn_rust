@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["another_function",""],["main",""]]};
