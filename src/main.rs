@@ -1,3 +1,5 @@
+
+
 // 主函数
 fn main() {
     // 单行注释
@@ -136,7 +138,7 @@ fn main() {
    // 变量的复制
    let x = 5;
    let y = x;
-   // 这个时候有两个“5”， 因为此处 x 是基本类型 i32 ，是在栈内的，rust会进行深度复制
+   // 这个时候有两个“5”， 因为此处 x 是基本类型 i32 ，是在栈内的，rust会进行深复制
 
    let s1 = String::from("hello");
    let s2 = s1;
@@ -180,7 +182,73 @@ fn main() {
    
    // 切片(Slice)类型，
    let s = String::from("string");
-   
+   let part1 = &s[0..3];
+   let part2 = &s[3..6];
+
+   println!("{}={}+{}", s, part1, part2);
+
+   // ..y 等价于 0..y
+   // x.. 等价于 x 到数据结束
+   // .. 等价于 0 到结束
+   // 切片的引用禁止更改
+   // part1.push_str("yes!"); // 报错
+   // 切片的结果必须是引用，开发的时候必须明示这一点(&s[0..3]的原因)
+
+   // String是内置的复合类型，str是基本类型
+   // 一种快速将 String 转换成 $str 的方法
+   let s1 = &s[..];
+
+   //除了字符串外，其它的一些线性数据结构也支持切片操作
+   let arr = [1, 3, 5, 7, 9];
+   let part = &arr[0..3];
+   for i in part.iter() {
+    println!("{}", i);
+   }
+
+   // rust的结构体
+   #[derive(Debug)]
+   // 这是一个结构体定义
+   // rust里的struct语句只能用来定义结构体，不能用来声明实例，花括号的结尾不需要分号，每个字段定义后面用逗号分隔
+   struct Site {
+    domain: String,
+    name: String,
+    nation: String,
+    found: u32
+   }
+
+   // 结构体实例，和json对象一样使用key: value的语法定义
+   let www_crow_pub = Site {
+    domain: String::from("www.crow.pub"),
+    name: String::from("RRRRRR"),
+    nation: String::from("USA"),
+    found: 2022
+   };
+
+   // 定义可以使用现有的变量
+   let domain = String::from("crow.pub");
+   let name = String::from("Hello");
+   let crow_pub = Site {
+    domain,
+    name,
+    nation: String::from("USA"),
+    found: 2021
+   };
+
+   // 结构体更新语法
+   let site = Site {
+    domain: String::from("www.crow.pub"),
+    ..www_crow_pub
+   };
+
+   // 元组结构体
+   struct Color(u8, u8, u8);
+   let black = Color(0, 0, 0);
+   println!("black = ({}, {}, {})", black.0, black.1, black.2);
+
+   // 输出结构体，需要导入调试库#[derive(Debug)] (209行，在结构体定义之前)
+   println!("site is {:?}", site);
+   // 另一种输出方式
+   println!("site is {:#?}", site);
 }
 
 // rust的函数无所谓声明位置，只要定义过就可以调用
@@ -202,10 +270,9 @@ fn makes_copy(some_integer: i32) {
 }
 
 // rust不允许出现垂直引用(Dangling References)，可以理解为野指针或空指针，如果出现这种变量，rust将在编译阶段发现并阻止，所以说下面这个函数将会导致报错
-// 这个doc里我没有调用这个函数所以它会被忽略，如果调用的话的确是会报错的
-fn dangle() -> &String {
-    let s = String::from("hello");
+// fn dangle() -> &String {
+//     let s = String::from("hello");
 
-    // s的生命周期已经结束
-    return &s;
-}
+//     // s的生命周期已经结束
+//     return &s;
+// }
