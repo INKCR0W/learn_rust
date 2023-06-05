@@ -249,7 +249,40 @@ fn main() {
    println!("site is {:?}", site);
    // 另一种输出方式
    println!("site is {:#?}", site);
+
+   // 结构体方法
+   #[derive(Debug)]
+   struct Rectangle {
+    width: u32,
+    height: u32,
+   }
+
+   // 注意，结构体的“方法”和“函数”有所不同，不过都是声明在impl块里的
+   impl Rectangle {
+    // 方法，有一个self参数，与结构体实例绑定
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    // 函数，没有self参数，不与实例绑定
+    fn create(width: u32, height: u32) -> Rectangle {
+        Rectangle { width, height }
+    }
+   }
+
+   let rect1 = Rectangle { width: 30, height: 50 };
+   println!("rect1's area is {}", rect1.area());
+   println!("{:?}", Rectangle::create(30, 50));
+
 }
+
+
+
+
+
+
+
+
 
 // rust的函数无所谓声明位置，只要定义过就可以调用
 // rust的函数参数列表和C一样必须规定数据类型
